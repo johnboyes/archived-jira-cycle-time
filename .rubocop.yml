@@ -6,3 +6,6 @@ Style/FrozenStringLiteralComment:
 
 Style/MutableConstant:
   Enabled: false
+
+Style/SingleLineBlockParams:
+  Enabled: false
