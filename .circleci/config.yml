@@ -43,9 +43,9 @@ jobs:
       # - run: bundle exec rake db:create
       # - run: bundle exec rake db:schema:load
 
-      - test:
-          post:
-            - bundle exec codeclimate-test-reporter
+      test:
+        post:
+          - bundle exec codeclimate-test-reporter
 
       # run tests!
       - run:
