@@ -1,5 +1,7 @@
 
 [![CircleCI](https://circleci.com/gh/johnboyes/jira-cycle-time.svg?style=svg)](https://circleci.com/gh/johnboyes/jira-cycle-time)
+[![Dependency Status](https://gemnasium.com/badges/github.com/johnboyes/jira-cycle-time.svg)](https://gemnasium.com/github.com/johnboyes/jira-cycle-time)
+
 
 # jira-cycle-time
 
