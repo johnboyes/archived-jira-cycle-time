@@ -16,6 +16,9 @@ jobs:
 
     working_directory: ~/repo
 
+    environment:
+      - CODECLIMATE_REPO_TOKEN: 5408f06c55bf2e203535e036b6c49626bc0bbef90b9f3614688ecbd459580708
+
     steps:
       - checkout
 
@@ -58,8 +61,4 @@ jobs:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
-          destination: test-results
-
-    machine:
-      environment:
-        - CODECLIMATE_REPO_TOKEN: 5408f06c55bf2e203535e036b6c49626bc0bbef90b9f3614688ecbd459580708
+          destination: test-results    
