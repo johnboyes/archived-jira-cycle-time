@@ -43,10 +43,6 @@ jobs:
       # - run: bundle exec rake db:create
       # - run: bundle exec rake db:schema:load
 
-      - run:
-          name: Code coverage
-          command: bundle exec codeclimate-test-reporter
-
       # run tests!
       - run:
           name: run tests
@@ -66,3 +62,7 @@ jobs:
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+
+      - run:
+          name: Code coverage
+          command: bundle exec codeclimate-test-reporter
