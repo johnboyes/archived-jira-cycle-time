@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'application'
 
 describe 'JIRA issue cycle time' do
