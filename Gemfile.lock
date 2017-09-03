@@ -34,6 +34,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   rspec
   rspec_junit_formatter
+  simplecov
 
 RUBY VERSION
    ruby 2.4.1p111

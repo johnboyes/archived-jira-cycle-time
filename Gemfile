@@ -5,4 +5,5 @@ group :test do
   gem 'codeclimate-test-reporter'
   gem 'rspec'
   gem 'rspec_junit_formatter'
+  gem 'simplecov'
 end
