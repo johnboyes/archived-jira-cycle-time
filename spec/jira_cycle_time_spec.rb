@@ -1,6 +1,27 @@
 require 'spec_helper'
 require 'application'
 
+describe 'Export JIRA issue cycle time data' do
+  let(:cycle_times) { CSV.read(CSV_EXPORT_PATH) }
+
+  before do
+    delete_csv_file
+    Rake::Task['export:csv'].invoke
+  end
+
+  after do
+    delete_csv_file
+  end
+
+  it 'exports the JIRA issue cycle times in a CSV file' do
+    expect(cycle_times).to match [
+      a_collection_containing_exactly('Completed Date', 'Start Date', 'Type', 'Id', 'Description'),
+      a_collection_containing_exactly('03/09/2017', '03/09/2017', '', 'AUTOMATED-14', 'Sunday afternoon issue'),
+      a_collection_containing_exactly('03/09/2017', '03/09/2017', '', 'AUTOMATED-13', 'Sunday morning issue')
+    ]
+  end
+end
+
 describe 'JIRA issue cycle time' do
   issues.each do |the_issue|
     describe the_issue['key'] do
