@@ -4,6 +4,7 @@ require 'json'
 # All of the columns which are part of the cycle time, in order
 CYCLE_TIME_COLUMNS = ['In Progress']
 CSV_EXPORT_PATH = '/tmp/jira_cycle_time.csv'
+LONG = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 
 def create_cycle_time_csv
   CSV.open(CSV_EXPORT_PATH, 'wb') do |csv|
