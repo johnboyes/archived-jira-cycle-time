@@ -15,3 +15,14 @@ Cycle time data is very useful for a variety of reporting and forecasting metric
 JIRA does provide out of the box [cycle time](https://confluence.atlassian.com/agile/glossary/cycle-time) reporting via its own [Control Chart tool](https://confluence.atlassian.com/display/AGILE/Viewing+the+Control+Chart), but sadly there is [no official way to export the data](https://jira.atlassian.com/browse/JSWSERVER-4288) through the [JIRA REST API](https://docs.atlassian.com/jira-software/REST/cloud) for 3rd party reporting outside of JIRA.
 
 This Ruby application provides a workaround by accessing the raw data through the "internal" JIRA GreenHopper API, and transforming it into a simple format for export.
+
+## Running the application
+
+```
+
+bundle
+bundle exec rake
+
+```
+
+This will generate a CSV file with the issue cycle times: `/tmp/jira_cycle_time.csv`

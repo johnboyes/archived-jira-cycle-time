@@ -1,7 +1,28 @@
+require 'csv'
 require 'json'
 
 # All of the columns which are part of the cycle time, in order
 CYCLE_TIME_COLUMNS = ['In Progress']
+CSV_EXPORT_PATH = '/tmp/jira_cycle_time.csv'
+
+def create_cycle_time_csv
+  CSV.open(CSV_EXPORT_PATH, 'wb') do |csv|
+    csv << ['Completed Date', 'Start Date', 'Type', 'Id', 'Description']
+    issues.each { |issue| csv << [completed_date(issue), start_date(issue), '', issue['key'], issue['summary']] }
+  end
+end
+
+def completed_date(issue)
+  format_for_csv(cycle_end_time(issue))
+end
+
+def start_date(issue)
+  format_for_csv(cycle_start_time(issue))
+end
+
+def format_for_csv(time)
+  time.strftime('%d/%m/%Y')
+end
 
 def cycle_start_time(issue)
   cycle_end_time(issue) - total_time_in_progress(issue)
