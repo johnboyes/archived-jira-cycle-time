@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'spec_helper'
 require 'application'
 
@@ -5,12 +6,13 @@ describe 'Export JIRA issue cycle time data' do
   let(:cycle_times) { CSV.read(CSV_EXPORT_PATH) }
 
   before do
-    delete_csv_file
+    delete_input_and_output_directory
+    copy_with_path('story.json', JSON_INPUT_PATH)
     Rake::Task['export:csv'].invoke
   end
 
   after do
-    delete_csv_file
+    delete_input_and_output_directory
   end
 
   it 'exports the JIRA issue cycle times in a CSV file' do
@@ -23,16 +25,28 @@ describe 'Export JIRA issue cycle time data' do
 end
 
 describe 'JIRA issue cycle time' do
-  issues.each do |the_issue|
-    describe the_issue['key'] do
-      let(:the_issue) { the_issue }
+  before do
+    delete_input_and_output_directory
+    copy_with_path('story.json', JSON_INPUT_PATH)
+  end
 
-      it 'always has a start time before the end time' do
-        expect(cycle_start_time(the_issue)).to be < cycle_end_time(the_issue)
-      end
+  after do
+    delete_input_and_output_directory
+  end
 
-      it 'has a difference between cycle start time and end time which is same as total time in progress' do
-        expect(cycle_end_time(the_issue) - cycle_start_time(the_issue)).to eq total_time_in_progress(the_issue)
+  describe 'issues' do
+    copy_with_path('story.json', JSON_INPUT_PATH)
+    issues.each do |the_issue|
+      context the_issue['key'] do
+        let(:the_issue) { the_issue }
+
+        it 'always has a start time before the end time' do
+          expect(cycle_start_time(the_issue)).to be < cycle_end_time(the_issue)
+        end
+
+        it 'has a difference between cycle start time and end time which is same as total time in progress' do
+          expect(cycle_end_time(the_issue) - cycle_start_time(the_issue)).to eq total_time_in_progress(the_issue)
+        end
       end
     end
   end

@@ -1,11 +1,17 @@
 require 'csv'
 require 'json'
 
-# All of the columns which are part of the cycle time, in order
-CYCLE_TIME_COLUMNS = ['In Progress']
-CSV_EXPORT_PATH = '/tmp/jira_cycle_time.csv'
+def input_and_output_directory
+  ENV['INPUT_AND_OUTPUT_DIRECTORY'] ? ENV['INPUT_AND_OUTPUT_DIRECTORY'] : 'data'
+end
+
+CYCLE_TIME_COLUMNS = ['In Progress'] # All of the columns which are part of the cycle time, in order
+INPUT_AND_OUTPUT_DIRECTORY = input_and_output_directory
+JSON_INPUT_PATH = "#{INPUT_AND_OUTPUT_DIRECTORY}/input/story.json"
+CSV_EXPORT_PATH = "#{INPUT_AND_OUTPUT_DIRECTORY}/output/jira_cycle_time.csv"
 
 def create_cycle_time_csv
+  FileUtils.mkdir_p(File.dirname(CSV_EXPORT_PATH))
   CSV.open(CSV_EXPORT_PATH, 'wb') do |csv|
     csv << ['Completed Date', 'Start Date', 'Type', 'Id', 'Description']
     issues.each { |issue| csv << [completed_date(issue), start_date(issue), '', issue['key'], issue['summary']] }
@@ -33,7 +39,7 @@ def cycle_end_time(issue)
 end
 
 def raw_control_chart_data
-  JSON.parse(File.read('dummy_data.json'))
+  JSON.parse(File.read(JSON_INPUT_PATH))
 end
 
 def control_chart_data
