@@ -1,10 +1,16 @@
-require 'rake'
 require 'simplecov'
-
 SimpleCov.start
+require 'dotenv'
+Dotenv.load('spec/env/test.env')
+require 'rake'
 
-def delete_csv_file
-  File.delete(CSV_EXPORT_PATH) if File.exist?(CSV_EXPORT_PATH)
+def copy_with_path(source, destination)
+  FileUtils.mkdir_p(File.dirname(destination))
+  FileUtils.cp(source, destination)
+end
+
+def delete_input_and_output_directory
+  FileUtils.rm_rf(INPUT_AND_OUTPUT_DIRECTORY)
 end
 
 # fix for RSpec/Rake bug - see https://github.com/rspec/rspec-core/issues/2314#issuecomment-241253384

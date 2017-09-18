@@ -5,6 +5,7 @@ gem 'rake'
 
 group :test do
   gem 'codeclimate-test-reporter'
+  gem 'dotenv'
   gem 'rspec'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
