@@ -91,6 +91,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   capybara
   codeclimate-test-reporter
   grape

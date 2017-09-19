@@ -1,7 +1,9 @@
+require 'active_support'
+require 'active_support/core_ext/object'
 require 'csv'
 
 # Converts raw json control chart data into cycle times and exports as CSV
-class JiraCycleTime
+class JiraCycleTime # rubocop:disable Metrics/ClassLength
   def initialize(raw_control_chart_json, cycle_time_columns)
     @raw_control_chart_json = raw_control_chart_json
     @cycle_time_columns = cycle_time_columns
@@ -10,15 +12,23 @@ class JiraCycleTime
   def as_csv
     CSV.generate do |csv|
       csv << ['Completed Date', 'Start Date', 'Type', 'Id', 'Description']
-      issues.each { |issue| csv << [completed_date(issue), start_date(issue), '', issue['key'], issue['summary']] }
+      issues.each { |issue| csv << issue_data_for_csv(issue) if completed_date(issue).present? }
     end
   end
 
+  def issue_data_for_csv(issue)
+    [completed_date(issue), start_date(issue), '', issue['key'], issue['summary']]
+  end
+
   def completed_date(issue)
-    format_for_csv(cycle_end_time(issue))
+    cycle_end_time = cycle_end_time(issue)
+    return '' if cycle_end_time.blank?
+    format_for_csv(cycle_end_time)
   end
 
   def start_date(issue)
+    cycle_start_time = cycle_start_time(issue)
+    return '' if cycle_start_time.blank?
     format_for_csv(cycle_start_time(issue))
   end
 
@@ -27,7 +37,9 @@ class JiraCycleTime
   end
 
   def cycle_start_time(issue)
-    cycle_end_time(issue) - total_time_in_progress(issue)
+    cycle_end_time = cycle_end_time(issue)
+    return '' if cycle_end_time.blank?
+    cycle_end_time - total_time_in_progress(issue)
   end
 
   def cycle_end_time(issue)
