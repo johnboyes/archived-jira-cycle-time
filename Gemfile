@@ -6,7 +6,6 @@ gem 'grape'
 group :test do
   gem 'capybara'
   gem 'codeclimate-test-reporter'
-  gem 'dotenv'
   gem 'rspec'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
