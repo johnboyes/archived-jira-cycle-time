@@ -4,9 +4,10 @@ require 'csv'
 
 # Converts raw json control chart data into cycle times and exports as CSV
 class JiraCycleTime # rubocop:disable Metrics/ClassLength
-  def initialize(raw_control_chart_json, cycle_time_columns)
+  def initialize(raw_control_chart_json, cycle_time_columns, done_column)
     @raw_control_chart_json = raw_control_chart_json
     @cycle_time_columns = cycle_time_columns
+    @done_column = done_column
   end
 
   def as_csv
@@ -22,14 +23,12 @@ class JiraCycleTime # rubocop:disable Metrics/ClassLength
 
   def completed_date(issue)
     cycle_end_time = cycle_end_time(issue)
-    return '' if cycle_end_time.blank?
-    format_for_csv(cycle_end_time)
+    cycle_end_time.blank? ? '' : format_for_csv(cycle_end_time)
   end
 
   def start_date(issue)
     cycle_start_time = cycle_start_time(issue)
-    return '' if cycle_start_time.blank?
-    format_for_csv(cycle_start_time(issue))
+    cycle_start_time.blank? ? '' : format_for_csv(cycle_start_time)
   end
 
   def format_for_csv(time)
@@ -38,12 +37,16 @@ class JiraCycleTime # rubocop:disable Metrics/ClassLength
 
   def cycle_start_time(issue)
     cycle_end_time = cycle_end_time(issue)
-    return '' if cycle_end_time.blank?
-    cycle_end_time - total_time_in_progress(issue)
+    cycle_end_time.blank? ? '' : cycle_end_time - total_time_in_progress(issue)
   end
 
   def cycle_end_time(issue)
-    issue['leaveTimes'][@cycle_time_columns.last]
+    return nil unless issue['leaveTimes'][@done_column].present?
+    issue['leaveTimes'][column_which_has_the_cycle_end_time(issue)]
+  end
+
+  def column_which_has_the_cycle_end_time(issue)
+    @cycle_time_columns.max_by { |cycle_time_column| issue['leaveTimes'][cycle_time_column].to_i }
   end
 
   def raw_control_chart_data
