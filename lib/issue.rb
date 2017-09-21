@@ -4,8 +4,6 @@ require 'active_support/core_ext/object'
 # JIRA Control Chart data relating to one issue
 class Issue
   def initialize(raw_issue:, cycle_time_columns:, done_column:, columns:)
-    # TODO: have more instance attributes here?
-    # TODO: is the incoming issue really raw, or has it already been parsed to some extent?
     @raw_issue = raw_issue
     @cycle_time_columns = cycle_time_columns
     @done_column = done_column
@@ -63,13 +61,11 @@ class Issue
     @done_time < cycle_end_time
   end
 
-  # TODO: extract to instance attribute?
   def cycle_end_time
     return nil unless @done_time.present?
     leave_times[column_which_has_the_cycle_end_time]
   end
 
-  # TODO: could this have a better name?
   def column_which_has_the_cycle_end_time
     @cycle_time_columns.max_by { |cycle_time_column| leave_times[cycle_time_column].to_i }
   end
