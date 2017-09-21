@@ -4,7 +4,7 @@ require 'csv'
 
 # Converts raw json control chart data into cycle times and exports as CSV
 class JiraCycleTime # rubocop:disable Metrics/ClassLength
-  def initialize(raw_control_chart_json, cycle_time_columns, done_column)
+  def initialize(raw_control_chart_json:, cycle_time_columns:, done_column:)
     @raw_control_chart_json = raw_control_chart_json
     @cycle_time_columns = cycle_time_columns
     @done_column = done_column
