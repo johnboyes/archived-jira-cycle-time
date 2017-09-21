@@ -13,8 +13,17 @@ class JiraCycleTime # rubocop:disable Metrics/ClassLength
   def as_csv
     CSV.generate do |csv|
       csv << ['Completed Date', 'Start Date', 'Type', 'Id', 'Description']
-      issues.each { |issue| csv << issue_data_for_csv(issue) if completed_date(issue).present? }
+      issues.each { |issue| csv << issue_data_for_csv(issue) unless in_progress?(issue) }
     end
+  end
+
+  def in_progress?(issue)
+    completed_date(issue).blank? || reopened_and_in_progress?(issue)
+  end
+
+  def reopened_and_in_progress?(issue)
+    return false if cycle_end_time(issue).blank?
+    issue['leaveTimes'][@done_column] < cycle_end_time(issue)
   end
 
   def issue_data_for_csv(issue)
