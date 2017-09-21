@@ -21,7 +21,9 @@ module JIRAControlChartData
         header 'Content-Disposition', 'attachment; filename=jira_cycle_time.csv'
         content_type 'application/csv'
         env['api.format'] = 'application/csv'
-        JiraCycleTime.new(raw_control_chart_json(params), params[:in_progress_columns], params[:done_column]).as_csv
+        JiraCycleTime.new(raw_control_chart_json: raw_control_chart_json(params),
+                          cycle_time_columns: params[:in_progress_columns],
+                          done_column: params[:done_column]).as_csv
       end
     end
   end
