@@ -1,2 +1,2 @@
-require './lib/jira_cycle_time_api'
-run JIRAControlChartData::API
+require './lib/jira_data_api'
+run JIRAData::API

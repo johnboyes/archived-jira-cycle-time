@@ -2,10 +2,10 @@ require 'simplecov'
 SimpleCov.start
 require 'rspec'
 require 'capybara/rspec'
-require_relative '../lib/jira_cycle_time_api'
+require_relative '../lib/jira_data_api'
 
 def app
-  JIRAControlChartData::API
+  JIRAData::API
 end
 
 RSpec.configure do |config|
